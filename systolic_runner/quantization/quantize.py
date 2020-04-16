@@ -330,12 +330,14 @@ class ONNXQuantizer:
         self._remove_quantized_weights()
 
         # update opset.
+        '''
         opset_info = next(
             (opset for opset in self.model.opset_import if opset.domain == '' or opset.domain == onnx_domain), None)
+        oi = self.model.opset_import
         if opset_info is not None:
             self.model.opset_import.remove(opset_info)
         self.model.opset_import.extend([onnx.helper.make_opsetid(onnx_domain, onnx_op_set_version)])
-
+        '''
         return self.model
 
     def find_weight_data(self, initializer):
@@ -622,6 +624,8 @@ class ONNXQuantizer:
             parameter param_name: Name of the quantization parameter.
             return: result, scale_name, zero_point_name, scale_shape, zero_point_shape.
         '''
+        # debug purpose
+        temp = self.quantization_params
         if self.quantization_params is None or param_name not in self.quantization_params:
             return False, "", "", "", ""
         params = self.quantization_params[param_name]
